@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .container2 { position: relative; }
+        .container2 img { display: block; }
+        .container2 .fa-download { position: absolute; bottom:0; left:0; }
+    </style>
+</head>
+<body>
+    <div class="modal fade" id="newAlbum" tabindex="-1" role="dialog" aria-labelledby="newAlbum-label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-primary" id="newAlbumTitle">Create new album</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <form>
+                    <div class="modal-body">
+                        <!--Modal content-->
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Album name</label>
+                                <input type="text" class="form-control" name="albumName" aria-describedby="albumNameHelp">
+                                <small id="albumNameHelp" class="form-text text-muted">You can change the album name anytime in future.</small>
+                            </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="myModal" class="modalf text-center">
+        <img class="modal-contentf  bg-info" id="img01">
+
+        <div class="my-3 text-center">
+            <div class="row text-center" style="margin: auto;">
+                <div class="col-sm-3"></div>
+
+                <div class="col-sm-6">
+                    <div class="row">
+                        <div class="col-sm-4 col-4">
+                            <button class="btn p-0 m-0 r-100">
+                                <i class="material-icons myIco way_btn" id="b_btn">keyboard_arrow_left</i>
+                            </button>   
+                        </div>
+
+                        <div class="col-sm-4 col-4">
+                            <button class="btn p-0 m-0 r-100">
+                                <i class="material-icons myIco" id="closef">close</i>
+                            </button>  
+                        </div>
+
+                        <div class="col-sm-4 col-4">
+                            <button class="btn p-0 m-0 r-100">
+                                <i class="material-icons myIco way_btn" id="f_btn">keyboard_arrow_right</i>
+                            </button>  
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-3"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="uploadPic" tabindex="-1" role="dialog" aria-labelledby="uploadPic-label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-primary" id="uploadPicTitle">Upload new photos</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <form>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <input type="file" class="form-control-file" onchange="readURL(this, 'upload_1')" id="newPictures" name="newPictures" multiple>
+                        </div>
+
+                        <div class="p-3">
+                            <div class="row" id="myUploadRow">
+                                
+                            </div>
+                        </div>
+
+                        <!--Modal content-->
+                       
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Upload</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="container py-5">
+        <div class="row m-0 p-0">
+            <div class="col-sm-8 py-2">
+                <h3 class="mx-2">My Gallery</h3>
+            </div>
+
+            <div class="col-sm-4 py-2">
+                <div class="text-right">
+                    <a data-toggle="modal" data-target="#newAlbum">
+                        <button class="btn p-0 m-0 r-100 ml-3" data-toggle="tooltip" data-placement="top" title="Add new album">
+                            <i class="material-icons myIco">add</i>
+                        </button>  
+                    </a>
+
+                    <button class="btn p-0 m-0 r-100 ml-3" onclick="upload_pictures()" data-toggle="tooltip" data-placement="top" title="Upload photos">
+                        <i class="material-icons myIco">cloud_upload</i>
+                    </button>  
+                 
+
+                    <button id="add_to_album_btn" style="display: none;" class="btn p-0 m-0 r-100 ml-3" data-toggle="tooltip" data-placement="top" title="Move photos to album">
+                        <i class="material-icons myIco">add_photo_alternate</i>
+                    </button>  
+
+                    <button id="delete_btn" style="display: none;" class="btn p-0 m-0 r-100 ml-3" data-toggle="tooltip" data-placement="top" title="Delete photos">
+                        <i class="material-icons myIco">delete</i>
+                    </button>  
+                </div>
+
+                
+            </div>
+        </div>
+
+        <div class="p-3">
+            <div class="row" id="myRow"></div>
+        </div>
+
+        
+    
+    </div>
+
+    
+</body>
+
+<script>
+    $('[data-toggle="tooltip"]').tooltip()
+
+    var current = null;
+    var selected_images = [];
+    var images = [
+        "cats/1800x1200_cat_relaxing_on_patio_other.jpg",
+        "cats/American-shorthair-cat-scaled.jpg",
+        "cats/corona-cat-in-the-house.jpg",
+        "cats/images.jpg",
+        "cats/kitten-440379.jpg",
+        "cats/original.jpg",
+        "cats/White_Persian_Cat.jpg"
+    ];
+
+    for (let i = 0; i < images.length; i++) {
+        const element = images[i];
+
+        $("#myRow").append(`
+
+            <div class="col-sm-2 p-2">
+                <div style="position: relative;">
+                    <img class="gallery-img" id="img_${i}" src="${element}" alt="">
+                    <span class="imgIco" id="checkMark_${i}">
+                        <i class="material-icons checkMark">done</i>
+                    </span>
+                </div>    
+            </div>
+        `);
+    }
+
+
+    function show_image(index_number) {
+        if (index_number >= images.length) {
+            current = index_number = 0;
+        }
+
+        if (index_number < 0) {
+            current = index_number = images.length - 1;
+        }
+
+        let whole_id = `img_${index_number}`;
+        return $(`#${whole_id}`).prop("src");
+    }
+
+   
+
+    // Get the modal
+    var modal = document.getElementById("myModal");
+
+    // Get the image and insert it inside the modal - use its "alt" text as a caption
+    var modalImg = document.getElementById("img01");
+    var captionText = document.getElementById("caption");
+
+
+
+    $(".gallery-img").click(function(){
+        let index_of_image = parseInt($(this).prop("id").split("_")[1]);
+        modal.style.display = "block";
+        modalImg.src = show_image(index_of_image);
+        // modalImg.style.height = "100%";
+        // modalImg.style.width = "100%";
+        captionText.innerHTML = $(this).attr('alt');
+        let index_number = index_of_image;
+        current = index_number;
+        // console.log(this.attr('src')); 
+    });
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementById("closef");
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() { 
+        modal.style.display = "none";
+    }
+
+    document.onkeydown=function(e){
+        if (modal.style.display == "block" && e.which == 27) {
+            modal.style.display = "none";
+            return false;
+        }
+    }
+
+    $(".way_btn").on('click', function () {
+        let way = null;
+        if ($(this).prop("id") == "f_btn") {
+            way = "forward";
+        }else{
+            way = "backward";
+        }
+        change_image(way);
+    });
+    
+    function change_image(way) {
+        let index = null;
+        if (way == "forward") {
+            current += 1
+        }else if (way == "backward") {
+            current -= 1
+        }
+        modalImg.src = show_image(current);
+    }
+
+    function mark_as_selected(id) {
+        let index_number = parseInt(id.split("_")[1]);
+
+        if (selected_images.includes(index_number)) {
+            $(`#${id}`).parent().parent().removeClass("selected");
+            var index = selected_images.indexOf(index_number); // get index if value found otherwise -1
+            if (index > -1) { //if found
+                selected_images.splice(index, 1);
+            }
+        }else{
+            $(`#${id}`).parent().parent().addClass("selected");
+            selected_images.push(index_number);
+        }
+
+        if (selected_images.length > 0) {
+            $("#delete_btn, #add_to_album_btn").css('display', '');
+        }else{
+            $("#delete_btn, #add_to_album_btn").css('display', 'none');
+        }
+    }   
+
+    $(".imgIco").on("click", function(){
+        let id = $(this).prop("id");
+        mark_as_selected(id);
+    });
+
+    function upload_pictures() {
+        $("#newPictures").click();
+    }
+
+    function readURL(input, show) {
+        // $("#"+show).css('display', 'none');
+        console.log(input.files);
+
+        for (let i = 0; i < input.files.length; i++) {
+
+            nameFile = input.files[i].name.split(".");
+            nameFile = nameFile[nameFile.length-1];
+        
+            console.log(nameFile);
+            if(nameFile=="png" || nameFile=="jpg" || nameFile=="jpeg" || nameFile=="tiff"){
+                if (input.files && input.files[i]) {
+                    $("#file-error-msg").text("");
+
+                    var reader = new FileReader();
+
+                    // if (nameFile == "docx") {
+                    //     show = show+"_2";
+                    // }
+        
+                    reader.onload = function (e) {
+                        var result_to_show = e.target.result;
+                        console.log(result_to_show)
+                    
+                        // $("#"+show).prop("class", "decrease-s-width gallery-img");
+
+                            
+                        $("#myUploadRow").append(`
+                        
+                            
+                                <div class="col-sm-3 p-2">
+                                    <div style="position: relative;">
+                                        <img class="gallery-img" id="upload_${i}" src="${result_to_show}" alt="">
+                                    </div>    
+                                </div>
+
+                        
+                        `);
+
+
+                        // $('#'+show)
+                        //     .attr('src', result_to_show)
+                        //     .width(110)
+                        //     .height(110);
+
+                        // $("#see_docs_file").prop("href", result_to_show);
+
+                    }
+
+                    // if (!(nameFile == "docx" || nameFile == "doc")) {
+                    //     $("#see_docs_file").css('display', 'none');
+                    //     reader.readAsDataURL(input.files[0]);
+                    // }else{
+                    //     $("#see_docs_file").css('display', '');
+                    // }
+                    reader.readAsDataURL(input.files[i]);
+                    $("#uploadPic").modal("show");
+
+
+                    // $("#success-msg").css('display', '');
+                    
+                }
+                
+                
+            }
+
+        // nameFile = input.files[0].name.split(".");
+        // nameFile = nameFile[nameFile.length-1];
+        
+        // console.log(nameFile);
+        // if(nameFile=="png" || nameFile=="jpg" || nameFile=="jpeg" || nameFile=="tiff"){
+        //     if (input.files && input.files[0]) {
+        //         $("#file-error-msg").text("");
+
+        //         var reader = new FileReader();
+
+        //         // if (nameFile == "docx") {
+        //         //     show = show+"_2";
+        //         // }
+    
+        //         reader.onload = function (e) {
+        //             var result_to_show = e.target.result;
+        //             console.log(result_to_show)
+                
+        //             $("#"+show).prop("class", "decrease-s-width gallery-img");
+
+
+
+        //             $('#'+show)
+        //                 .attr('src', result_to_show)
+        //                 .width(110)
+        //                 .height(110);
+
+        //             $("#see_docs_file").prop("href", result_to_show);
+
+        //         };
+
+        //         // if (!(nameFile == "docx" || nameFile == "doc")) {
+        //         //     $("#see_docs_file").css('display', 'none');
+        //         //     reader.readAsDataURL(input.files[0]);
+        //         // }else{
+        //         //     $("#see_docs_file").css('display', '');
+        //         // }
+        //         reader.readAsDataURL(input.files[0]);
+        //         $("#uploadPic").modal("toggle");
+
+        //         // $("#success-msg").css('display', '');
+                
+        //     }
+        // }else{
+        //     $("#see_docs_file").css('display', 'none');
+        //     $("#success-msg").css('display', 'none');
+        //     // $("#"+show).css('display', 'none');
+        //     // $("#target_file").load(location.href + " #target_file>*", "");
+        //     $("#target_file").val(null);
+        //     console.log("this is input");
+        //     console.log(input.files);
+        //     console.log("this is input");
+        //     // $("#");
+        //     alert("Invalid file type!");
+        //     $("showing_div").removeClass("dragover");
+
+        }
+        
+    }
+
+</script>
+
+
+</html>
